@@ -11,7 +11,7 @@ namespace EmployeeManagementSystem.Controllers
     /// <summary>
     /// Admin-only controller for managing and retrieving audit logs.
     /// </summary>
-    [Authorize(Roles = Role.Admin)]
+    [Authorize(Roles = $"{Role.Admin},{Role.Manager}")]
     [ApiController]
     [Route("api/[controller]")]
     public class AuditLogController : ControllerBase

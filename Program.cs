@@ -2,6 +2,7 @@
 using EmployeeManagementSystem.Interfaces;
 using EmployeeManagementSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -20,6 +21,20 @@ builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost4200", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100MB
+});
+
 
 var tokenKey = builder.Configuration["Jwt:TokenKey"];
 
@@ -56,6 +71,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseHttpsRedirection();
+
+// 👇 Add this before auth
+app.UseCors("AllowLocalhost4200");
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

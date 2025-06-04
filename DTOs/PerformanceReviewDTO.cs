@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeManagementSystem.DTOs
 {
@@ -17,7 +17,7 @@ namespace EmployeeManagementSystem.DTOs
         [Required]
         public DateTime ReviewDate { get; set; }
 
-      
+        public int Score { get; set; }  // ✅ Added Score
 
         [Range(1, 5)]
         public int Rating { get; set; }

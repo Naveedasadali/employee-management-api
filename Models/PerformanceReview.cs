@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeManagementSystem.Models
 {
@@ -14,8 +14,10 @@ namespace EmployeeManagementSystem.Models
         [Required]
         public DateTime ReviewDate { get; set; }
 
-       
 
+        [Required]
+        [Range(0, 100)]
+        public int Score { get; set; } // ✅ Add this line
         public int Rating { get; set; } // 1 to 5
 
         public required string Reviewer { get; set; }

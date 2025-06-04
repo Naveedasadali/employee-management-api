@@ -10,7 +10,7 @@ namespace EmployeeManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = $"{Role.Admin},{Role.Manager}")]
+    [Authorize(Roles = $"{Role.Admin},{Role.Manager},{Role.Employee}")]
     public class LeaveController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

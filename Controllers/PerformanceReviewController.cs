@@ -10,7 +10,7 @@ namespace EmployeeManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = $"{Role.Admin},{Role.Manager}")]
+    [Authorize(Roles = $"{Role.Admin},{Role.Manager},{Role.Employee}")]
     public class PerformanceReviewController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -32,7 +32,8 @@ namespace EmployeeManagementSystem.Controllers
                     Reviewer = r.Reviewer,
                     ReviewDate = r.ReviewDate,
                     Comments = r.Comments,
-                    Rating = r.Rating
+                    Rating = r.Rating,
+                    Score = r.Score // ✅ Include Score in GET
                 }).ToListAsync();
 
             return Ok(reviews);
@@ -48,11 +49,12 @@ namespace EmployeeManagementSystem.Controllers
             var review = new PerformanceReview
             {
                 EmployeeId = dto.EmployeeId,
-                Employee = employee, // ✅ Required member set
+                Employee = employee,
                 Reviewer = dto.Reviewer,
                 ReviewDate = dto.ReviewDate,
                 Comments = dto.Comments,
-                Rating = dto.Rating
+                Rating = dto.Rating,
+                Score = dto.Score // ✅ Save Score in DB
             };
 
             _context.PerformanceReviews.Add(review);
@@ -73,6 +75,7 @@ namespace EmployeeManagementSystem.Controllers
             review.ReviewDate = dto.ReviewDate;
             review.Comments = dto.Comments;
             review.Rating = dto.Rating;
+            review.Score = dto.Score; // ✅ Update Score too
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "Performance review updated." });

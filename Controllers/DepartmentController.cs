@@ -10,7 +10,8 @@ namespace EmployeeManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = Role.Admin)]
+    [Authorize(Roles = "Admin,Manager")]
+
     public class DepartmentController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -33,6 +34,16 @@ namespace EmployeeManagementSystem.Controllers
 
             return Ok(depts);
         }
+        // Add this to your DepartmentController.cs
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Department>> Get(int id)
+        {
+            var dept = await _context.Departments.FindAsync(id);
+            if (dept == null) return NotFound();
+
+            return Ok(dept);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> Create(DepartmentDTO dto)
